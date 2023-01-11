@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <title>Color Guesser</title>
+</head>
+<body>
+    <div>
+        <p>Guess the Color </p>
+        <p class="answer"></p>
+        <p class="cheer" style="display:none;">WIN!!!</p>
+    </div>
+    <div class="colors">
+        <div id="id_1" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">01</p></div>
+        <div id="id_2" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">02</p></div>
+        <div id="id_3" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">03</p></div>
+        <div id="id_4" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">04</p></div>
+        <div id="id_5" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">05</p></div>
+        <div id="id_6" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">06</p></div>
+        <div id="id_7" class="clickable" style="width: 100%;">&nbsp;<p style="display:none;">07</p></div>
+    </div>
+    <p>Difficulty</p>
+    <input id="Low_difficulty" style="font-family:Helvetica" type="submit" value="Low">
+    <input id="Med_difficulty" style="font-family:Helvetica" type="submit" value="Medium">
+    <input id="High_difficulty" style="font-family:Helvetica" type="submit" value="High">
+    <br>
+    <input id="Refresh" style="font-family:Helvetica" type="submit" value="New Game">
+   
+    <script>
+    var maxindex = 7;
+    $('#Low_difficulty').click(function() {
+    $('#id_4, #id_5, #id_6, #id_7').hide();
+    SetColor();
+    maxindex = 3;
+    $("p.cheer").hide();
+
+    })
+
+    $('#Med_difficulty').click(function() {
+    $('#id_6, #id_7').hide();
+    $('#id_4, #id_5').show();
+    SetColor();
+    maxindex = 5;
+    $("p.cheer").hide();
+    })
+
+    $('#High_difficulty').click(function() {
+    $('#id_4, #id_5, #id_6, #id_7').show();
+    SetColor();
+    maxindex = 7;
+    $("p.cheer").hide();
+    })
+
+    $('#Refresh').click(function() {
+        $("p.cheer").hide();
+    SetColor();
+   
+    })
+
+    function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+     var color = '#';
+     for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+    }
+    function SetColor(){
+
+        $('div.colors div:visible').each(function(){
+
+            var ranCol = getRandomColor();
+            $(this).css("background-color",ranCol );
+           
+            $(this).children("p").text(ranCol);
+           // $(this).text(ranCol);
+
+        
+        })
+
+       
+            $("p.answer").text( $('div.colors div:visible p').eq(Math.floor(Math.random() * maxindex-1)).text());
+            
+        
+    }
+
+    $(".clickable").on('click', function(event){
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+   
+    if($(this).children("p").text() == $("p.answer").text()){
+       $("p.cheer").show();
+    }
+    });
+    SetColor();
+    </script>
+
+
+</body>
+</html>
